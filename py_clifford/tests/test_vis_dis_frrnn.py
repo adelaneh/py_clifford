@@ -25,7 +25,8 @@ class VisualDiscriminationFRRNNTestCases(unittest.TestCase):
         tf.reset_default_graph()
         self._config_filename = os.sep.join([datasets_path, 'test_firing_rate_rnn_config_2.json'])
         self._config          = load_configs(self._config_filename)
-        self._test_save_path  = os.sep.join([models_path, "test_save_load_vis_dis_frrnn_model"])
+        self._test_save_path  = os.sep.join([models_path, "test_save_load_vis_dis_frrnn_model_1"])
+        self._test_load_path  = os.sep.join([models_path, "test_save_load_vis_dis_frrnn_model_2"])
 
     def test_create_vis_dis_frrnn(self):
         _visdisfrrnn     = VisualDiscriminationFRRNN(self._config)
@@ -84,8 +85,8 @@ class VisualDiscriminationFRRNNTestCases(unittest.TestCase):
         _mean_hidden_bias_before_training       = np.mean(_visdisfrrnn._biases['hidden'].eval(session=_visdisfrrnn._tf_session))
         self.assertEqual(_mean_hidden_bias_before_training, 0.)
 
-        print("Trying to load the model from %s ..."%self._test_save_path)
-        _visdisfrrnn.load_model(self._test_save_path)
+        print("Trying to load the model from %s ..."%self._test_load_path)
+        _visdisfrrnn.load_model(self._test_load_path)
 
         _mean_hidden_bias_after_training    = np.mean(_visdisfrrnn._biases['hidden'].eval(session=_visdisfrrnn._tf_session))
         self.assertNotEqual(_mean_hidden_bias_after_training, 0.)
