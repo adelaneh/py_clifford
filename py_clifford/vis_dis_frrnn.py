@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import os
 import logging
-import progressbar
 from tqdm.auto import trange
 
 import tensorflow as tf
