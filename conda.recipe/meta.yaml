@@ -14,7 +14,7 @@ requirements:
     - numpy
     - matplotlib
     - six
-    - tensorflow=1.15.*
+    - tensorflow=1.15
     - tqdm
 
   run:
@@ -24,7 +24,7 @@ requirements:
     - numpy
     - matplotlib
     - six
-    - tensorflow=1.15.*
+    - tensorflow=1.15
     - tqdm
 
 test:
