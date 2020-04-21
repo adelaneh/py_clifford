@@ -1,4 +1,4 @@
-name: py_stringclustering_dev
+name: py_clifford_dev
 channels:
   - conda-forge
   - adelaneh

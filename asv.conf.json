@@ -54,8 +54,6 @@
          "tensorflow":["1.14.0"],
          "matplotlib":[],
          "scikit-learn":[],
-	     "pip+py_stringmatching": [],
-	     "pip+py_stringsimjoin": [],
          "pip+pyprind": []
      },
 
