@@ -2,5 +2,5 @@ pandas
 numpy
 matplotlib
 six
-tensorflow==1.15.2
+tensorflow==1.15.*
 tqdm
