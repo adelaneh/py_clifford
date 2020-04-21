@@ -1,0 +1,7 @@
+__version__ = "0.1.0"
+
+from py_clifford.data_generators.vis_dis_data_gen import get_orientation_tuned_firing_rate_response
+from py_clifford.data_generators.vis_dis_data_gen import generate_stimuli_cue_intervals
+from py_clifford.data_generators.vis_dis_data_gen import generate_noise_for_intervals
+from py_clifford.data_generators.vis_dis_data_gen import generate_random_orientation_pair
+from py_clifford.data_generators.vis_dis_data_gen import generate_trials

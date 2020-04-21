@@ -1,0 +1,53 @@
+{
+    "experiment_name": "Sample experiment configuration",
+    "output_params": {
+        "display_step": 50,
+        "save_step"   : 1000
+    },
+    "training_params": {
+        "learning_rate":         0.001,
+        "training_steps":        5000,
+        "training_batch_size":   100,
+        "validation_batch_size": 1000,
+        "test_batch_size":       10000,
+        "num_epochs":            10,
+        "norm_reg_beta":         0,
+        "adam_beta1":            0.9,
+        "adam_beta2":            0.999
+    },
+    "network_params": {
+        "input_params": {
+            "num_orituned_input_units": 32,
+            "has_go_cue_unit":          true
+        },
+        "hidden_params": {
+            "layers": [
+                {
+                    "num_hidden_units":    100,
+                    "activation_function": "tanh",
+                    "dtovertau":           0.1,
+                    "layer_normalize":     false
+                }
+            ]
+        },
+        "output_params": {
+            "num_sincos_output_units":     4,
+            "num_ordinal_output_units":    2,
+            "sincos_activation_function":  "tanh",
+            "ordinal_activation_function": "sigmoid"
+        }
+    },
+    "data_params": {
+        "timesteps":                400,
+        "s1_start":                 50,
+        "s1_end":                   100,
+        "s2_start":                 150,
+        "s2_end":                   200,
+        "go_cue":                   300,
+        "hidden_units_noise_std":   0.1,
+        "min_angular_diff":         1.0,
+        "max_angular_diff":         50.0,
+        "sampling_annealing_const": 5.0
+    },
+    "numpy_rnd_seed": 10007
+}

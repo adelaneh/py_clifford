@@ -1,0 +1,3 @@
+v0.1.0 -
+  * Initial release.
+  * Contains classes and utility functions to train and test recurrent neural networks simulating a 2-line visual discrimination task.

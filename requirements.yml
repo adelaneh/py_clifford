@@ -1,0 +1,13 @@
+name: py_stringclustering_dev
+channels:
+  - conda-forge
+  - adelaneh
+  - defaults
+dependencies:
+    - setuptools
+    - pandas
+    - nose
+    - numpy
+    - matplotlib
+    - tensorflow=1.14.0
+    - tqdm

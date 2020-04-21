@@ -1,0 +1,54 @@
+package:
+  name: py_clifford
+  version: "0.1.0"
+
+source:
+    git_url: ../
+
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - pandas
+    - numpy
+    - matplotlib
+    - six
+    - tensorflow=1.14.0
+    - tqdm
+
+  run:
+    - python
+    - setuptools
+    - pandas
+    - numpy
+    - matplotlib
+    - six
+    - tensorflow=1.14.0
+    - tqdm
+
+test:
+  # Python imports
+  imports:
+    - py_clifford
+
+  # commands:
+    # You can putls test commands to be run here.  Use this to test that the
+    # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: http://www.columbia.edu/~aa4348/py_clifford
+  license: BSD License
+  summary: 'Python library for simulation of 2-line visual discrimination task.'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml

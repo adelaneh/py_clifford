@@ -1,0 +1,2 @@
+model_checkpoint_path: "/proj/retroviz-PG0/py_clifford/py_clifford/tests/models/test_save_load_vis_dis_frrnn_model_3/model.ckpt"
+all_model_checkpoint_paths: "/proj/retroviz-PG0/py_clifford/py_clifford/tests/models/test_save_load_vis_dis_frrnn_model_3/model.ckpt"
