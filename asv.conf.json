@@ -51,7 +51,7 @@
          "pandas":[],
          "six":[],
          "tqdm":[],
-         "tensorflow":["1.15.2"],
+         "tensorflow":["1.15"],
          "matplotlib":[],
          "scikit-learn":[],
          "pip+pyprind": []

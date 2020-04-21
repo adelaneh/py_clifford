@@ -38,7 +38,7 @@ The required dependencies to build the packages are:
 * pandas (provides data structures to store and manage tables)
 * numpy (used to store similarity matrices and required by pandas)
 * matplotlib (provides tools to create plots and animations)
-* tensorflow (version 1.x, used as the baseline to implement FRRNNs)
+* tensorflow (version 1.15.x, used as the baseline to implement FRRNNs)
 * tqdm (facilitates tracking the progress of training and testing the FRRNNs)
 
 Platforms
