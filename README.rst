@@ -11,15 +11,15 @@
 py_clifford
 =================
 
-<div align="center">
-  <img src="https://github.com/adelaneh/py_clifford/blob/master/docs/images/clifford_mov.gif"/>
-</div>
-
 This repository provides abstractions and utilities to use firing rate recurrent 
 neural networks (FRRNNs) for simulating 2-line visual discrimination task (see 
 the reference section below). It also contains data analysis procedures which 
 use concepts and techniques from geometrical topology and linear algebra to 
 find low-dimensional manifolds in the activity space of the FRRNNs over each trial.
+
+<div align="center">
+  <img src="https://github.com/adelaneh/py_clifford/blob/master/docs/images/clifford_mov.gif"/>
+</div>
 
 *More details to come*
 
