@@ -86,13 +86,13 @@ if __name__ == "__main__":
             'six',
 	    'pandas',
             'matplotlib',
-            'tensorflow==1.15.2',
+            'tensorflow==1.15.*',
             'tqdm',
         ],
         setup_requires=[
 #             'numpy>=1.7.0'                                                   
             'numpy'
-            'tensorflow==1.15.2',
+            'tensorflow==1.15.*',
             'tqdm',
         ],
         include_package_data=True,
