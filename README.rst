@@ -11,6 +11,8 @@
 py_clifford
 =================
 
+![py_cliffor](docs/images/clifford_mov.gif)
+
 This repository provides abstractions and utilities to use firing rate recurrent 
 neural networks (FRRNNs) for simulating 2-line visual discrimination task (see 
 the reference section below). It also contains data analysis procedures which 
