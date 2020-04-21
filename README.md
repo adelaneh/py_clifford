@@ -18,7 +18,7 @@ use concepts and techniques from geometrical topology and linear algebra to
 find low-dimensional manifolds in the activity space of the FRRNNs over each trial.
 
 <div align="center">
-  <img src="https://github.com/adelaneh/py_clifford/blob/master/docs/images/clifford_mov.gif"/>
+    <img src="https://github.com/adelaneh/py_clifford/blob/master/docs/images/clifford_mov.gif"/>
 </div>
 
 *More details to come*
