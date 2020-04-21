@@ -1,7 +1,7 @@
 .. image:: https://travis-ci.org/adelaneh/py_clifford.svg?branch=master
   :target: https://travis-ci.org/adelaneh/py_clifford
 
-.. image:: https://ci.appveyor.com/api/projects/status/123srwchg7gd6e1d?svg=true
+.. image:: https://ci.appveyor.com/api/projects/status/88ki1hfa9sr7tr3g?svg=true
   :target: https://ci.appveyor.com/project/adelaneh/py-clifford
 
 .. image:: https://coveralls.io/repos/github/adelaneh/py_clifford/badge.svg
