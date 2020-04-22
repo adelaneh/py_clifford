@@ -30,7 +30,7 @@ Dependencies
 
 Installing from Source Distribution
 -----------------------------------
-Create a virtual environment and activate it using instruction from `here <https://docs.python.org/3/tutorial/venv.html>` or `here <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`.
+Create a virtual environment and activate it using instruction from `here <https://docs.python.org/3/tutorial/venv.html>`_ or `here <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_.
 
 Clone the *py_clifford* package from GitHub
 

@@ -49,7 +49,7 @@ py_clifford has been tested on Linux, OS X and Windows.
 Installation
 ============
 
-See `installation instructions <docs/user_manual/installation.rst>`./
+See `installation instructions <docs/user_manual/installation.rst>`_.
 
 References
 ==========
