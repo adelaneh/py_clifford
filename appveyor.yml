@@ -33,9 +33,9 @@ install:
   - pip install -I pyprind==2.9.8
   - pip install -r requirements.txt
   - python setup.py install
-  - conda install -c intel numpy mkl-service --yes
+  - conda install -c intel numpy=1.17 mkl-service --yes
   - conda list | grep numpy
-  - pip show numpyt
+  - pip show numpy
 
 build: false
 
