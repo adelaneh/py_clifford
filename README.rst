@@ -53,17 +53,17 @@ See `installation instructions <docs/user_manual/installation.rst>`_.
 
 References
 ==========
-For details of the theoretical and experimental background of the psychophysical tasks, see:
+For details of the theoretical and experimental background of the psychophysical tasks, see::
 
-``@article {DingE9115,
-    author = {Ding, Stephanie and Cueva, Christopher J. and Tsodyks, Misha and Qian, Ning},
-    title = {Visual perception as retrospective Bayesian decoding from high- to low-level features},
-    volume = {114},
-    number = {43},
-    pages = {E9115--E9124},
-    year = {2017},
-    journal = {Proceedings of the National Academy of Sciences}
-}``
+    @article {DingE9115,
+        author = {Ding, Stephanie and Cueva, Christopher J. and Tsodyks, Misha and Qian, Ning},
+        title = {Visual perception as retrospective Bayesian decoding from high- to low-level features},
+        volume = {114},
+        number = {43},
+        pages = {E9115--E9124},
+        year = {2017},
+        journal = {Proceedings of the National Academy of Sciences}
+    }
 
 For details of the simulations and data analysis, watch this page for the soon-to-be-released paper!
 
