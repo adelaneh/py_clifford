@@ -14,27 +14,29 @@ Dependencies
 ------------
 * pandas (provides data structures to store and manage tables)
 * numpy (version 1.16, used to store similarity matrices and required by pandas)
-* tensorflow (version 1.15.2, used to implement the RNNs and optimize them)
+* tensorflow (version 1.15, used to implement the RNNs and optimize them)
 * tqdm (provides progress tracking facilities for training the networks)
 
-Installing Using pip
---------------------
-To install the package using pip, execute the following
-command::
+.. Installing Using pip
+.. --------------------
+.. To install the package using pip, execute the following
+.. command:
 
-    pip install -U py_clifford
+..    pip install -U py_clifford
 
 
-The above command will install *py_clifford* and all of its dependencies.
+.. The above command will install *py_clifford* and all of its dependencies.
 
 
 Installing from Source Distribution
 -----------------------------------
+Create a virtual environment and activate it using instruction from `here <https://docs.python.org/3/tutorial/venv.html>` or `here <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`.
+
 Clone the *py_clifford* package from GitHub
 
     git clone https://github.com/adelaneh/py_clifford.git
 
-Then,  execute the following commands from the package root::
+Then, execute the following commands from the package root::
 
     python setup.py install
 
