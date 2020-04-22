@@ -4,17 +4,17 @@ Installation
 
 Requirements
 ------------
-* Python 2.7 or Python 3.4+
+* Python 2.7 or Python 3.5+
 
 Platforms
 ---------
-*py_clifford* has been tested on Linux.
+*py_clifford* has been tested on Linux, OS X and Windows.
 
 Dependencies
 ------------
 * pandas (provides data structures to store and manage tables)
-* numpy (used to store similarity matrices and required by pandas)
-* tensorflow (used to implement the RNNs and optimize them)
+* numpy (version 1.16, used to store similarity matrices and required by pandas)
+* tensorflow (version 1.15.2, used to implement the RNNs and optimize them)
 * tqdm (provides progress tracking facilities for training the networks)
 
 Installing Using pip

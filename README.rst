@@ -36,12 +36,29 @@ Dependencies
 The required dependencies to build the packages are:
 
 * pandas (provides data structures to store and manage tables)
-* numpy (used to store similarity matrices and required by pandas)
+* numpy (version 1.16, used to store similarity matrices and required by pandas)
 * matplotlib (provides tools to create plots and animations)
-* tensorflow (version 1.15, used as the baseline to implement FRRNNs)
+* tensorflow (version 1.15.2, used as the baseline to implement FRRNNs)
 * tqdm (facilitates tracking the progress of training and testing the FRRNNs)
 
 Platforms
 =========
 
-py_clifford has been tested on Linux.
+py_clifford has been tested on Linux, OS X and Windows.
+
+References
+==========
+For details of the theoretical and experimental background of the psychophysical tasks, see:
+
+`@article {DingE9115,
+    author = {Ding, Stephanie and Cueva, Christopher J. and Tsodyks, Misha and Qian, Ning},
+    title = {Visual perception as retrospective Bayesian decoding from high- to low-level features},
+    volume = {114},
+    number = {43},
+    pages = {E9115--E9124},
+    year = {2017},
+    journal = {Proceedings of the National Academy of Sciences}
+}`
+
+For details of the simulations and data analysis, watch this page for the soon-to-be-released paper!
+
