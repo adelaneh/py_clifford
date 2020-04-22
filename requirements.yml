@@ -10,5 +10,5 @@ dependencies:
     - nose
     - numpy==1.16
     - matplotlib
-    - tensorflow==1.15
+    - tensorflow==1.15.2
     - tqdm
