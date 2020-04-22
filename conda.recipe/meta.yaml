@@ -11,7 +11,7 @@ requirements:
     - python
     - setuptools
     - pandas
-    - numpy
+    - numpy=1.16
     - matplotlib
     - six
     - tensorflow=1.15
@@ -21,7 +21,7 @@ requirements:
     - python
     - setuptools
     - pandas
-    - numpy
+    - numpy=1.16
     - matplotlib
     - six
     - tensorflow=1.15

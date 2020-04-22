@@ -8,7 +8,7 @@ dependencies:
     - setuptools
     - pandas
     - nose
-    - numpy
+    - numpy==1.16
     - matplotlib
     - tensorflow==1.15
     - tqdm

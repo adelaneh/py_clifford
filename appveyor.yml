@@ -29,11 +29,11 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
   # Don't install from requirements-pip.txt, python-coveralls has broken dependencies on windows it seems.
-  - conda install --yes setuptools nose numpy pip coverage scipy pandas six scikit-learn ipython
+  - conda install --yes setuptools nose numpy=1.16 pip coverage scipy pandas six scikit-learn ipython
   - pip install -I pyprind==2.9.8
   - pip install -r requirements.txt
   - python setup.py install
-  - conda install -c intel numpy=1.17 mkl-service --yes
+  - conda install -c intel numpy=1.16 mkl-service --yes
   - conda list | grep numpy
   - pip show numpy
 
