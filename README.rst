@@ -19,7 +19,7 @@ find low-dimensional manifolds in the activity space of the FRRNNs over each tri
 
 .. image:: https://github.com/adelaneh/py_clifford/blob/master/docs/images/clifford_mov.gif
 
-*More details to come*
+*More details to come!*
 
 The package is free, open-source, and BSD-licensed.
 
@@ -50,6 +50,14 @@ Installation
 ============
 
 See `installation instructions <docs/user_manual/installation.rst>`_.
+
+Usage
+=====
+
+See the accompanying notebooks:
+
+* `Simulating the 2-line Visual Discrimination Experiments using Firing Rate RNNs <notebooks/VisualDiscriminationTaskSimulation.ipynb>`_
+* More notebooks to come.
 
 References
 ==========
