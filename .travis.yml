@@ -44,16 +44,16 @@ before_install:
   - conda config --add channels conda-forge
   - conda config --add channels intel
   - echo $PYTHON_VERSION
-  - conda create -n testenv python=$PYTHON_VERSION  --yes
+  - conda create -n testenv python=$PYTHON_VERSION  --yes -q
   - source activate testenv
 
 install:
-  - conda install --yes python=$PYTHON_VERSION nose pandas six scikit-learn ipython pip coverage tqdm
+  - conda install --yes python=$PYTHON_VERSION nose pandas six scikit-learn ipython pip coverage tqdm -q
 #  - if [[ "$TRAVIS_OS_NAME" == "csx" ]]; then conda install --yes gcc; fi
-  - pip install -I pyprind==2.9.8
+  - pip install -I pyprind==2.9.8 -q
   - pip install coveralls -q
   - pip install requests -q
-  - pip install -r requirements.txt
+  - pip install -r requirements.txt -q
 
 #script:
 #  - nosetests -s
