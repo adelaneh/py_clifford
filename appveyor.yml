@@ -34,7 +34,8 @@ install:
   - pip install -r requirements.txt
   - python setup.py install
   - conda install -c intel numpy mkl-service --yes
-  - conda env list
+  - conda list | grep numpy
+  - pip show numpyt
 
 build: false
 
