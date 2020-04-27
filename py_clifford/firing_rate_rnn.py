@@ -83,6 +83,8 @@ class FiringRateRNNCell(LayerRNNCell):
         self._hidden_units_noise_std    = hidden_units_noise_std
         self._layer_normalize           = layer_normalize
 
+        self._is_generate_noise         = True
+
     @property
     def state_size(self):
         return self._num_units
@@ -121,7 +123,10 @@ class FiringRateRNNCell(LayerRNNCell):
         """
         ## Add noise to the current state
         if self._hidden_units_noise_std > 0:
-            noise              = random_ops.random_normal(array_ops.shape(state),mean = 0.0,  stddev=self._hidden_units_noise_std)
+            # noise              = random_ops.random_normal(array_ops.shape(state),mean = 0.0,  stddev=self._hidden_units_noise_std)
+            if self._is_generate_noise:
+                noise                   = np.random.normal(0.0, self._hidden_units_noise_std, state.shape)
+                self._is_generate_noise = False
             postactnoise_state = math_ops.add(self._activation(state), noise)
         else:
             postactnoise_state = self._activation(state)

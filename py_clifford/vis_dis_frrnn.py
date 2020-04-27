@@ -18,6 +18,7 @@ from py_clifford.config import load_configs
 from py_clifford.unit_sv_initializer import UnitSVInitializer
 from py_clifford.data_generators import *
 from py_clifford.firing_rate_rnn import FiringRateRNNCell
+from py_clifford.timeliner import TimeLiner
 
 class VisualDiscriminationFRRNN():
     """Firing rate recurrent neural network for 2-line visual discrimination task.
@@ -140,10 +141,15 @@ class VisualDiscriminationFRRNN():
         self._read_linear_hidden_activity    = bool(self._testing_config['read_linear_hidden_activity'])
         self._integrate_response_window_size = int(self._testing_config['integrate_response_window_size'])
 
+        self._testing_X     = None
+        self._testing_Y     = None
+        self._testing_s1s   = None
+        self._testing_s2s   = None
+
         self._validation_config             = self._config['validation_params']
         self._validation_batch_size         = int(self._validation_config['batch_size'])
         self._validation_step               = int(self._validation_config['validation_step'])
-        self._validate_state                = lambda _s: _s % self._validation_step == 0 or _s == 1
+        self._validate_state                = lambda _s: _s % self._validation_step == 0 or _s == 1 or _s == self._training_steps
 
         self._training_loss_history               = []
         self._training_loss_history_viz           = []
@@ -186,29 +192,31 @@ class VisualDiscriminationFRRNN():
         """
         if _step is None:
             _step = 1
-        _X, _Y, _s1s, _s2s = generate_trials(self._config,
+        self._training_step_X, self._training_step_Y, self._training_step_s1s, self._training_step_s2s = generate_trials(self._config,
                                              batch_size=self._train_batch_size,
                                              angular_diff_deg=self._next_ang_diff(_step),
                                              random_periods=True,
                                              rnd_prob=self._rnd_prob,
                                              rescale_input=True,
                                             )
+        self._frrnn._is_generate_noise      = True
         with trange(self._num_epochs, desc='Epoch', leave=False) as epoch_trange:
             for epoch in epoch_trange:
-                self._tf_session.run(self._train_op, feed_dict={self._X: _X, self._Y: _Y})
-
-        return _X, _Y, _s1s, _s2s
+                self._tf_session.run(self._train_op, feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y})
 
     def train(self):
         """Train the network.
         """
+
         with trange(1, self._training_steps+1, desc='Training step',) as training_step_trange:
             for _step in training_step_trange:
                 self._logger.debug('Training step %d'%_step)
 
-                _training_X, _training_Y, _training_s1s, _training_s2s = self.__step__(_step)
+                self.__step__(_step)
 
-                _training_ouput, _training_loss = self._tf_session.run([self._transformed_output, self._loss_op], feed_dict={self._X: _training_X, self._Y: _training_Y})
+                _, _training_loss = self._tf_session.run([self._transformed_output, self._loss_op], 
+                                                                        feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y},
+                                                                      )
                 self._training_loss_history.append(_training_loss)
 
                 training_step_trange.set_postfix(angular_diff=self._next_ang_diff(_step), training_loss=_training_loss)
@@ -220,10 +228,10 @@ class VisualDiscriminationFRRNN():
                 
                 if self._save_state(_step):
                     if self._save_test_pointcloud:
-                        _, _hidden_activity_tensor, _, _testing_s1s, _testing_s2s, _, _ = self.test(
-                                testing_batch_size=self._testing_batch_size,
+                        _, _testing_hidden_activity_tensor, _, _testing_s1s, _testing_s2s, _, _ = self.test(
+                              testing_batch_size=self._testing_batch_size,
                         )
-                        self.save(_hidden_activity_tensor, _testing_s1s, _testing_s2s)
+                        self.save(_testing_hidden_activity_tensor, _testing_s1s, _testing_s2s)
                     else:
                         self.save()
 
@@ -237,23 +245,25 @@ class VisualDiscriminationFRRNN():
         """
         if testing_batch_size is None:
             testing_batch_size = self._testing_batch_size
-        _testing_X, _testing_Y, _testing_s1s, _testing_s2s = generate_trials(self._config,
-                                             batch_size=testing_batch_size,
-                                             angular_diff_deg=None,
-                                             random_periods=False,
-                                             rnd_prob=1.0,
-                                             rescale_input=True,
-                                             angle1_deg=angle1_deg,
-                                             angle2_deg=angle2_deg,
-                                            )
-        _testing_output, _hidden_activity_tensor, _testing_error = self._tf_session.run(
+        if self._testing_X is None or self._testing_Y is None or \
+          self._testing_s1s is None or self._testing_s2s is None:
+            self._testing_X, self._testing_Y, self._testing_s1s, self._testing_s2s = generate_trials(self._config,
+                                                 batch_size=testing_batch_size,
+                                                 angular_diff_deg=None,
+                                                 random_periods=False,
+                                                 rnd_prob=1.0,
+                                                 rescale_input=True,
+                                                 angle1_deg=angle1_deg,
+                                                 angle2_deg=angle2_deg,
+                                                )
+        self._testing_output, self._testing_hidden_activity_tensor, self._testing_error = self._tf_session.run(
                 [self._transformed_output,
                  self._hidden_before_acttivation if self._read_linear_hidden_activity else self._hidden_after_activation, 
                  self._err_op
                 ], 
-                feed_dict={self._X: _testing_X, self._Y: _testing_Y})
+                feed_dict={self._X: self._testing_X, self._Y: self._testing_Y})
 
-        return _testing_output, _hidden_activity_tensor, _testing_error, _testing_s1s, _testing_s2s, _testing_X, _testing_Y
+        return self._testing_output, self._testing_hidden_activity_tensor, self._testing_error, self._testing_s1s, self._testing_s2s, self._testing_X, self._testing_Y
 
     def save_model(self, _save_path):
         _save_path = self.__create_save_path__(_save_path)
@@ -319,7 +329,7 @@ class VisualDiscriminationFRRNN():
 
         for vo_inx in range(len(validation_orientations)):
             angle1_deg, angle2_deg = validation_orientations[vo_inx]
-            _val_X_ccw, _val_Y_ccw, _val_s1s_ccw, _val_s2s_ccw = generate_trials(self._config,
+            self._val_X_ccw, self._val_Y_ccw, self._val_s1s_ccw, self._val_s2s_ccw = generate_trials(self._config,
                                                                                  batch_size=self._validation_batch_size,
                                                                                  angular_diff_deg=None,
                                                                                  random_periods=False,
@@ -327,7 +337,7 @@ class VisualDiscriminationFRRNN():
                                                                                  angle1_deg=angle1_deg,
                                                                                  angle2_deg=angle2_deg,
                                                                                 )
-            _val_X_cw, _val_Y_cw, _val_s1s_cw, _val_s2s_cw = generate_trials(self._config,
+            self._val_X_cw, self._val_Y_cw, self._val_s1s_cw, self._val_s2s_cw = generate_trials(self._config,
                                                                               batch_size=self._validation_batch_size,
                                                                               angular_diff_deg=None,
                                                                               random_periods=False,
@@ -336,44 +346,29 @@ class VisualDiscriminationFRRNN():
                                                                               angle2_deg=angle1_deg,
                                                                              )
 
-            _val_X, _val_Y, suffle_inxs = self.__shuffle_batches__(_val_X_ccw, _val_Y_ccw, _val_X_cw, _val_Y_cw)
+            shuffling_indexes = np.arange(len(self._val_X_ccw) + len(self._val_X_cw))
+            np.random.shuffle(shuffling_indexes)
+            self._val_X = np.append(self._val_X_ccw, self._val_X_cw, axis=0)
+            self._val_X = self._val_X[shuffling_indexes]
+            self._val_Y = np.append(self._val_Y_ccw, self._val_Y_cw, axis=0)
+            self._val_Y = self._val_Y[shuffling_indexes]
 
-            _predictions = self._tf_session.run(self._transformed_output, feed_dict={self._X: _val_X, self._Y: _val_Y})
+            self._val_predictions = self._tf_session.run(self._transformed_output, feed_dict={self._X: self._val_X, self._Y: self._val_Y})
 
-            _val_X_ccw, _val_Y_ccw, _predictions_ccw, _val_X_cw, _val_Y_cw, predictions_cw = self.__unshuffle_batches__(_val_X, _val_Y, 
-                                                                                                                        _predictions,
-                                                                                                                        suffle_inxs,
-                                                                                                                        len(_val_X_ccw),
-                                                                                                                       )
+            _ccw_batch_indexes     = [xx for xx in range(len(shuffling_indexes)) if shuffling_indexes[xx] <  len(self._val_X_ccw)]
+            _cw_batch_indexes      = [xx for xx in range(len(shuffling_indexes)) if shuffling_indexes[xx] >= len(self._val_X_ccw)]
+            _val_ccw_predictions   = self._val_predictions[_ccw_batch_indexes]
+            _val_cw_predictions    = self._val_predictions[_cw_batch_indexes]
+            self._val_X_ccw        = self._val_X[_ccw_batch_indexes]
+            self._val_Y_ccw        = self._val_Y[_ccw_batch_indexes]
+            self._val_X_cw         = self._val_X[_cw_batch_indexes]
+            self._val_Y_cw         = self._val_Y[_cw_batch_indexes]
+
             if vo_inx == 0 and visualize:
                 self._logger.debug("Visualizing (in validate) for the first pair of validation_orientations (%.02f, %.02f)", angle1_deg, angle2_deg)
-                self._training_accuracy_matrix_history.append(self.__create_accuracy_matrix__(_predictions_ccw, predictions_cw))
+                self._training_accuracy_matrix_history.append(self.__create_accuracy_matrix__(_val_ccw_predictions, _val_cw_predictions))
                 self.__plot_loss_accuracy__()
-                self.__visualize__(_val_X_ccw, _val_Y_ccw, _predictions_ccw, 
-                                   _val_X_cw, _val_Y_cw, predictions_cw
-                                  )
-
-    def __shuffle_batches__(self, batch1_X, batch1_Y, batch2_X, batch2_Y):
-        shuffling_indexes = np.arange(len(batch1_X) + len(batch2_X))
-        np.random.shuffle(shuffling_indexes)
-        batch_X = np.append(batch1_X, batch2_X, axis=0)
-        batch_X = batch_X[shuffling_indexes]
-        batch_Y = np.append(batch1_Y, batch2_Y, axis=0)
-        batch_Y = batch_Y[shuffling_indexes]
-
-        return batch_X, batch_Y, shuffling_indexes
-
-    def __unshuffle_batches__(self, batch_X, batch_Y, predictions, shuffling_indexes, batch1_X_len):
-        batch1_indexes = [xx for xx in range(len(shuffling_indexes)) if shuffling_indexes[xx] <  batch1_X_len]
-        batch2_indexes = [xx for xx in range(len(shuffling_indexes)) if shuffling_indexes[xx] >= batch1_X_len]
-        predictions1 = predictions[batch1_indexes]
-        predictions2 = predictions[batch2_indexes]
-        batch1_X = batch_X[batch1_indexes]
-        batch1_Y = batch_Y[batch1_indexes]
-        batch2_X = batch_X[batch2_indexes]
-        batch2_Y = batch_Y[batch2_indexes]
-
-        return batch1_X, batch1_Y, predictions1, batch2_X, batch2_Y, predictions2
+                self.__visualize__(_val_ccw_predictions, _val_cw_predictions)
 
     def __plot_loss_accuracy__(self, _save_path=None):
         _save_path = self.__create_save_path__(_save_path)
@@ -408,7 +403,7 @@ class VisualDiscriminationFRRNN():
 
         return
 
-    def __visualize__(self, _val_X_ccw, _val_Y_ccw, _predictions_ccw, _val_X_cw, _val_Y_cw, predictions_cw):
+    def __visualize__(self, _predictions_ccw, predictions_cw):
         return
 
     def __create_accuracy_matrix__(self, _predictions_ccw, _predictions_cw):
