@@ -10,7 +10,7 @@
         "learning_rate":         0.001,
         "training_steps":        20000,
         "batch_size":            100,
-        "num_epochs":            10,
+        "num_epochs":            1,
         "norm_reg_beta":         0,
         "adam_beta1":            0.9,
         "adam_beta2":            0.999

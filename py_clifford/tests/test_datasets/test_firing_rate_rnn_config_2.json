@@ -7,10 +7,10 @@
         "save_test_pointcloud": false
     },
     "training_params": {
-        "learning_rate":         0.001,
+        "learning_rate":         0.0005,
         "training_steps":        20000,
         "batch_size":            100,
-        "num_epochs":            10,
+        "num_epochs":            1,
         "norm_reg_beta":         0,
         "adam_beta1":            0.9,
         "adam_beta2":            0.999
@@ -18,7 +18,7 @@
     "testing_params": {
         "batch_size": 10000,
         "read_linear_hidden_activity": true,
-        "integrate_response_window_size": 5
+        "integrate_response_window_size": 20
     },
     "validation_params": {
         "batch_size": 1000,

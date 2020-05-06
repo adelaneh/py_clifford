@@ -98,10 +98,10 @@ class FiringRateRNNCell(LayerRNNCell):
             raise ValueError("Expected inputs.shape[-1] to be known, saw shape: %s"
                              % inputs_shape)
     
-        self._input_depth = inputs_shape[1].value
+        self._num_inputs = inputs_shape[1].value
         self._kernel = self.add_variable(
             _WEIGHTS_VARIABLE_NAME,
-            shape=[self._input_depth + self._num_units, self._num_units],
+            shape=[self._num_inputs + self._num_units, self._num_units],
             initializer=self._w_initializer(dtype=self.dtype) if self._w_initializer is not None else None,
         )
         self._bias = self.add_variable(
@@ -119,7 +119,7 @@ class FiringRateRNNCell(LayerRNNCell):
 
         `output = new_state = act(new_gate_inputs)`
 
-        ..    Each row of the inputs consists of (1) a network input of dimension self._input_depth, and (2) hidden state noise values. These 
+        ..    Each row of the inputs consists of (1) a network input of dimension self._num_inputs, and (2) hidden state noise values. These 
         """
         ## Add noise to the current state
         if self._hidden_units_noise_std > 0:

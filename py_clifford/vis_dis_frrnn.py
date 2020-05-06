@@ -18,7 +18,6 @@ from py_clifford.config import load_configs
 from py_clifford.unit_sv_initializer import UnitSVInitializer
 from py_clifford.data_generators import *
 from py_clifford.firing_rate_rnn import FiringRateRNNCell
-from py_clifford.timeliner import TimeLiner
 
 class VisualDiscriminationFRRNN():
     """Firing rate recurrent neural network for 2-line visual discrimination task.
@@ -26,12 +25,14 @@ class VisualDiscriminationFRRNN():
     """
     def __init__(self,
                  config):
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
 
         if config is None:
             raise TypeError("No configuration provided.")
 
         self._config                 = config
+
+        np.random.seed(int(self._config['numpy_rnd_seed']))
 
         self._log_level              = eval("logging."+self._config['logging_level'])
         self._logger                 = logging.getLogger(__name__)
@@ -151,7 +152,6 @@ class VisualDiscriminationFRRNN():
         self._validation_step               = int(self._validation_config['validation_step'])
         self._validate_state                = lambda _s: _s % self._validation_step == 0 or _s == 1 or _s == self._training_steps
 
-        self._training_loss_history               = []
         self._training_loss_history_viz           = []
         self._training_accuracy_matrix_history    = []
 
@@ -200,13 +200,18 @@ class VisualDiscriminationFRRNN():
                                              rescale_input=True,
                                             )
         self._frrnn._is_generate_noise      = True
-        with trange(self._num_epochs, desc='Epoch', leave=False) as epoch_trange:
-            for epoch in epoch_trange:
-                self._tf_session.run(self._train_op, feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y})
+        if self._num_epochs > 1:
+            with trange(self._num_epochs, desc='Epoch', leave=False) as epoch_trange:
+                for epoch in epoch_trange:
+                    self._tf_session.run(self._train_op, feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y})
+        else:
+            self._tf_session.run(self._train_op, feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y})
 
     def train(self):
         """Train the network.
         """
+
+        _training_loss    = None
 
         with trange(1, self._training_steps+1, desc='Training step',) as training_step_trange:
             for _step in training_step_trange:
@@ -214,18 +219,17 @@ class VisualDiscriminationFRRNN():
 
                 self.__step__(_step)
 
-                _, _training_loss = self._tf_session.run([self._transformed_output, self._loss_op], 
-                                                                        feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y},
-                                                                      )
-                self._training_loss_history.append(_training_loss)
-
-                training_step_trange.set_postfix(angular_diff=self._next_ang_diff(_step), training_loss=_training_loss)
-
                 if self._validate_state(_step):
                     self._logger.debug("Validating at step %d", _step)
+                    _, _training_loss = self._tf_session.run([self._transformed_output, self._loss_op], 
+                                                                            feed_dict={self._X: self._training_step_X, self._Y: self._training_step_Y},
+                                                                          )
+
                     self._training_loss_history_viz.append(_training_loss)
                     self.validate(visualize=self._visualize_state(_step))
                 
+                training_step_trange.set_postfix(angular_diff=self._next_ang_diff(_step), training_loss=_training_loss)
+
                 if self._save_state(_step):
                     if self._save_test_pointcloud:
                         _, _testing_hidden_activity_tensor, _, _testing_s1s, _testing_s2s, _, _ = self.test(

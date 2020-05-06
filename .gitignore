@@ -86,3 +86,6 @@ py_clifford/._*
 
 # Bash shell files
 *.sh
+
+# Local tests
+main.py
