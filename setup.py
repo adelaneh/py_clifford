@@ -81,7 +81,7 @@ if __name__ == "__main__":
         packages=packages,
         install_requires=[
 #             'numpy>=1.7.0',
-            'numpy==1.16',
+            'numpy==1.22.0',
             'six',
 	    'pandas',
             'matplotlib',
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         ],
         setup_requires=[
 #             'numpy>=1.7.0',                                                
-            'numpy==1.16',
+            'numpy==1.22.0',
             'tensorflow<2',
             'tqdm',
         ],
